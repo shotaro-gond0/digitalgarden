@@ -1,0 +1,110 @@
+/*
+ * Claude "Imagine" 図解ツールが出力する生SVG（visualize:show_widget）を
+ * Obsidian の Reading view でも正しい配色で表示するためのスニペット。
+ * エクスポートされたSVGは claude.ai 側だけに存在するCSSクラス/変数
+ * （c-*, node, box, t/ts/th, --color-*）に依存しており、Obsidian上では
+ * 未定義のため全て黒塗りになっていた。ここでその配色システムを再現する。
+ */
+
+/* SVGのstroke初期値は"none"、fill初期値は"black"。Obsidianのテーマ変数
+   （--text-muted 等）を経由した var() の二重参照は埋め込みSVG内で解決されず
+   初期値にフォールバックしていた（＝矢印線が stroke:none で消える、文字は
+   常にblackでダーク/ライトに反応しない）。そのため、ここでは一切 var() を
+   経由せず、すべて直接の16進数カラーとして定義する。値は c-gray ランプ
+   （50=#F1EFE8 … 900=#2C2C2A）を流用し、Claude側の配色規則
+   （ライト: 600 stroke / ダーク: 200 stroke）に合わせる。*/
+:root {
+  --color-text-primary: #2C2C2A;
+  --color-text-secondary: #5F5E5A;
+  --color-text-tertiary: #888780;
+  --color-border-primary: #5F5E5A;
+  --color-border-secondary: #5F5E5A;
+  --color-border-tertiary: #B4B2A9;
+  --color-background-secondary: #F1EFE8;
+}
+.theme-dark {
+  --color-text-primary: #F1EFE8;
+  --color-text-secondary: #B4B2A9;
+  --color-text-tertiary: #888780;
+  --color-border-primary: #B4B2A9;
+  --color-border-secondary: #B4B2A9;
+  --color-border-tertiary: #5F5E5A;
+  --color-background-secondary: #444441;
+}
+
+/* テキストクラス（同一プロパティを2回書いても後勝ちになるだけで保険にならない
+   ため、var() は使わずリテラル値のみを置く） */
+svg text.t, svg text.ts, svg text.th { fill: #2C2C2A; }
+svg text.t { font-size: 14px; }
+svg text.ts { font-size: 12px; fill: #5F5E5A; }
+svg text.th { font-size: 14px; font-weight: 500; }
+.theme-dark svg text.t, .theme-dark svg text.ts, .theme-dark svg text.th { fill: #F1EFE8; }
+.theme-dark svg text.ts { fill: #B4B2A9; }
+
+/* 中立要素（矢印線は診断の必須要件のため直値で確実に描画する） */
+svg .box { fill: #F1EFE8; stroke: #B4B2A9; }
+svg .arr { stroke: #5F5E5A; fill: none; }
+svg .leader { stroke: #B4B2A9; stroke-dasharray: 2 2; fill: none; }
+svg .node { cursor: pointer; }
+svg .node:hover { opacity: 0.85; }
+.theme-dark svg .box { fill: #444441; stroke: #5F5E5A; }
+.theme-dark svg .arr { stroke: #B4B2A9; }
+.theme-dark svg .leader { stroke: #5F5E5A; }
+
+/* カラーランプ（ライトモード: 50 fill + 600 stroke + 800 title / 600 subtitle） */
+svg .c-purple { fill: #EEEDFE; stroke: #534AB7; }
+svg .c-purple > .th, svg .c-purple > text.th { fill: #3C3489; }
+svg .c-purple > .ts, svg .c-purple > text.ts { fill: #534AB7; }
+svg .c-teal { fill: #E1F5EE; stroke: #0F6E56; }
+svg .c-teal > .th, svg .c-teal > text.th { fill: #085041; }
+svg .c-teal > .ts, svg .c-teal > text.ts { fill: #0F6E56; }
+svg .c-coral { fill: #FAECE7; stroke: #993C1D; }
+svg .c-coral > .th, svg .c-coral > text.th { fill: #712B13; }
+svg .c-coral > .ts, svg .c-coral > text.ts { fill: #993C1D; }
+svg .c-pink { fill: #FBEAF0; stroke: #993556; }
+svg .c-pink > .th, svg .c-pink > text.th { fill: #72243E; }
+svg .c-pink > .ts, svg .c-pink > text.ts { fill: #993556; }
+svg .c-gray { fill: #F1EFE8; stroke: #5F5E5A; }
+svg .c-gray > .th, svg .c-gray > text.th { fill: #444441; }
+svg .c-gray > .ts, svg .c-gray > text.ts { fill: #5F5E5A; }
+svg .c-blue { fill: #E6F1FB; stroke: #185FA5; }
+svg .c-blue > .th, svg .c-blue > text.th { fill: #0C447C; }
+svg .c-blue > .ts, svg .c-blue > text.ts { fill: #185FA5; }
+svg .c-green { fill: #EAF3DE; stroke: #3B6D11; }
+svg .c-green > .th, svg .c-green > text.th { fill: #27500A; }
+svg .c-green > .ts, svg .c-green > text.ts { fill: #3B6D11; }
+svg .c-amber { fill: #FAEEDA; stroke: #854F0B; }
+svg .c-amber > .th, svg .c-amber > text.th { fill: #633806; }
+svg .c-amber > .ts, svg .c-amber > text.ts { fill: #854F0B; }
+svg .c-red { fill: #FCEBEB; stroke: #A32D2D; }
+svg .c-red > .th, svg .c-red > text.th { fill: #791F1F; }
+svg .c-red > .ts, svg .c-red > text.ts { fill: #A32D2D; }
+
+/* カラーランプ（ダークモード: 800 fill + 200 stroke + 100 title / 200 subtitle） */
+.theme-dark svg .c-purple { fill: #3C3489; stroke: #AFA9EC; }
+.theme-dark svg .c-purple > .th, .theme-dark svg .c-purple > text.th { fill: #CECBF6; }
+.theme-dark svg .c-purple > .ts, .theme-dark svg .c-purple > text.ts { fill: #AFA9EC; }
+.theme-dark svg .c-teal { fill: #085041; stroke: #5DCAA5; }
+.theme-dark svg .c-teal > .th, .theme-dark svg .c-teal > text.th { fill: #9FE1CB; }
+.theme-dark svg .c-teal > .ts, .theme-dark svg .c-teal > text.ts { fill: #5DCAA5; }
+.theme-dark svg .c-coral { fill: #712B13; stroke: #F0997B; }
+.theme-dark svg .c-coral > .th, .theme-dark svg .c-coral > text.th { fill: #F5C4B3; }
+.theme-dark svg .c-coral > .ts, .theme-dark svg .c-coral > text.ts { fill: #F0997B; }
+.theme-dark svg .c-pink { fill: #72243E; stroke: #ED93B1; }
+.theme-dark svg .c-pink > .th, .theme-dark svg .c-pink > text.th { fill: #F4C0D1; }
+.theme-dark svg .c-pink > .ts, .theme-dark svg .c-pink > text.ts { fill: #ED93B1; }
+.theme-dark svg .c-gray { fill: #444441; stroke: #B4B2A9; }
+.theme-dark svg .c-gray > .th, .theme-dark svg .c-gray > text.th { fill: #D3D1C7; }
+.theme-dark svg .c-gray > .ts, .theme-dark svg .c-gray > text.ts { fill: #B4B2A9; }
+.theme-dark svg .c-blue { fill: #0C447C; stroke: #85B7EB; }
+.theme-dark svg .c-blue > .th, .theme-dark svg .c-blue > text.th { fill: #B5D4F4; }
+.theme-dark svg .c-blue > .ts, .theme-dark svg .c-blue > text.ts { fill: #85B7EB; }
+.theme-dark svg .c-green { fill: #27500A; stroke: #97C459; }
+.theme-dark svg .c-green > .th, .theme-dark svg .c-green > text.th { fill: #C0DD97; }
+.theme-dark svg .c-green > .ts, .theme-dark svg .c-green > text.ts { fill: #97C459; }
+.theme-dark svg .c-amber { fill: #633806; stroke: #EF9F27; }
+.theme-dark svg .c-amber > .th, .theme-dark svg .c-amber > text.th { fill: #FAC775; }
+.theme-dark svg .c-amber > .ts, .theme-dark svg .c-amber > text.ts { fill: #EF9F27; }
+.theme-dark svg .c-red { fill: #791F1F; stroke: #F09595; }
+.theme-dark svg .c-red > .th, .theme-dark svg .c-red > text.th { fill: #F7C1C1; }
+.theme-dark svg .c-red > .ts, .theme-dark svg .c-red > text.ts { fill: #F09595; }
