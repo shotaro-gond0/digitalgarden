@@ -1,3 +1,14 @@
+// PlemolJPConsole NF (SIL OFL 1.1, see styles/fonts/LICENSE-PlemolJP.txt)
+// 半角:全角=1:2の等幅比を持つため、罫線・ASCIIアートと日本語が混在する
+// コードブロックでも文字位置がズレない。
+@font-face {
+    font-family: "PlemolJPConsole NF";
+    src: url("/styles/fonts/PlemolJPConsoleNF-Light.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
 body {
     /***
       ADD YOUR CUSTOM STYLING HERE. (INSIDE THE body {...} section.)
@@ -10,4 +21,17 @@ body {
     //  h1 {
     //   color: black;
     //  }
+
+    // ASCIIアート図(罫線+日本語混在)のレイアウト崩れ対策:
+    // 1. pre-wrapによる折り返しで罫線がズレるのを防ぎ、はみ出しは横スクロールに回す
+    // 2. 既定の等幅フォントスタックには日本語グリフが無く、和文部分だけ別フォントに
+    //    フォールバックして等幅比が崩れるため、CJK対応の等幅フォントを先頭に指定する
+    pre,
+    code[class*="language-"] {
+        white-space: pre;
+        word-wrap: normal;
+        word-break: normal;
+        overflow-x: auto;
+        font-family: "PlemolJPConsole NF", var(--font-monospace-default);
+    }
 }
