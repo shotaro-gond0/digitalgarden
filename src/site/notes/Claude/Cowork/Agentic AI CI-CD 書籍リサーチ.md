@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/claude/cowork/agentic-ai-ci-cd/","dg-note-properties":{}}
+{"dg-publish":true,"permalink":"/claude/cowork/agentic-ai-ci-cd/","tags":["cat/ml-dl","cat/python","cat/devops","cat/claude"],"dg-note-properties":{"tags":["cat/ml-dl","cat/python","cat/devops","cat/claude"]}}
 ---
 
 ---
