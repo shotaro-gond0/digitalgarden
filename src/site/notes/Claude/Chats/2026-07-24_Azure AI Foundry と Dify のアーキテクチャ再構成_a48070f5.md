@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/claude/chats/2026-07-24-azure-ai-foundry-dify-a48070f5/","dg-note-properties":{}}
+{"dg-publish":true,"permalink":"/claude/chats/2026-07-24-azure-ai-foundry-dify-a48070f5/","tags":["cat/ml-dl","cat/python","cat/react","cat/js-ts","cat/math","cat/devops","cat/css","cat/claude","cat/azure","cat/md","cat/linux"],"dg-note-properties":{"tags":["cat/ml-dl","cat/python","cat/react","cat/js-ts","cat/math","cat/devops","cat/css","cat/claude","cat/azure","cat/md","cat/linux"]}}
 ---
 
 ---
