@@ -6,6 +6,45 @@
 </p>
 
 # Digital Obsidian Garden
+
+## Changes in this fork
+
+This repository is a fork of the official Public Template ([oleeskild/digitalgarden](https://github.com/oleeskild/digitalgarden)) with a few CSS/build customizations layered on top for a specific personal vault setup.
+
+### Fonts
+
+- Embedded the monospace font **PlemolJPConsole NF** (SIL OFL 1.1) via `@font-face` in [`src/site/styles/custom-style.scss`](src/site/styles/custom-style.scss) and applied it to code blocks (`pre`, `code[class*="language-"]`). Its half-width:full-width = 1:2 monospace ratio keeps box-drawing characters and ASCII art aligned in code blocks that mix Japanese text with ASCII.
+- Also disabled line wrapping via `white-space: pre` / `word-wrap: normal`, letting overflow scroll horizontally instead, to prevent ASCII diagrams from breaking their layout.
+- The font file itself lives at `src/site/styles/fonts/PlemolJPConsoleNF-Light.woff2` (plus its license) and is served to the browser via `eleventyConfig.addPassthroughCopy("src/site/styles/fonts");` in [`.eleventy.js`](.eleventy.js) — see the caution below, this exact line has a history of getting silently dropped by template updates.
+
+### Colors
+
+- Added [`src/site/styles/user/claude-diagrams.css`](src/site/styles/user/claude-diagrams.css), which reproduces the color system needed to correctly render (light/dark aware) raw SVGs produced by Claude's "Imagine" diagramming tool (`visualize:show_widget`) in Obsidian's Reading view. The exported SVGs depend on CSS classes/variables that only exist on `claude.ai` (`c-*`, `node`, `box`, `--color-*`, etc.), which are undefined here and render everything as solid black by default. Because double-indirected `var()` references don't resolve inside embedded SVGs, this file redefines text, borders, arrows, and the color ramps (purple/teal/coral/pink/gray/blue/green/amber/red) using literal hex colors instead.
+
+### ⚠️ Caution when applying a template update (the "Update to X.X.X" button in Site Template)
+
+The `Update to X.X.X` button in the Digital Garden plugin's settings screen, under the "Site Template" section, is **not a 3-way merge** — it auto-generates a branch/PR that overwrites target files wholesale with the new template version's contents. A customized file caught in that overwrite doesn't show up as a git merge conflict; it just silently loses the customization, invisible until you look at the diff. **Before merging such a PR:**
+
+1. Check the PR's changed-file list:
+
+   ```bash
+   gh pr view <PR#> --repo shotaro-gond0/digitalgarden --json files --jq '.files[].path'
+   ```
+
+   and look for any of:
+   - `.eleventy.js`
+   - `src/site/styles/custom-style.scss`
+   - `src/site/styles/user/claude-diagrams.css`
+   - `README.md` — **this section itself is not exempt.** It was wiped out wholesale by the v1.91.0 template update (upstream's own README.md just overwrites this file) and had to be rewritten from git history afterward.
+2. For `.eleventy.js` / `custom-style.scss` / `claude-diagrams.css`: if none of these three appear, the customizations are unaffected — merge as usual. If any do appear, check out the update branch locally and diff each flagged file against `main` (`git diff main -- <file>`), and confirm the pieces described in "Fonts" and "Colors" above are still present.
+3. For `README.md`: a full diff isn't useful here, since upstream legitimately rewrites large parts of this file on every update. Instead, just confirm the `## Changes in this fork` heading (this whole section, from here through the end of this caution block) is still present near the top of the branch's `README.md`. If it's gone, don't try to patch in the missing lines — re-add the entire section verbatim (copy it from `main` before the update, e.g. `git show main:README.md`, or from this file's own git history) after the merge overwrites it.
+4. If something's missing, restore it directly in the branch, commit (e.g. `fix: restore <what> removed by template update`), push, then merge.
+5. After merging, a green Netlify build does **not** prove nothing regressed — a missing font or broken SVG colors doesn't fail the build, it just silently renders wrong (default font instead of the monospace one, or solid-black diagrams). Always open the deployed site afterward and visually confirm code-block box-drawing/ASCII alignment and Claude Imagine diagram colors in both light and dark mode.
+
+This exact regression — the `eleventyConfig.addPassthroughCopy("src/site/styles/fonts");` line in `.eleventy.js` silently dropped by the template overwrite — has already recurred **three times** (v1.81.2, v1.83.4, v1.91.0), each requiring a manual restore commit after the fact.
+
+---
+
 This is the template to be used together with the [Digital Garden Obsidian Plugin](https://github.com/oleeskild/Obsidian-Digital-Garden).
 See the README in the plugin repo for information on how to set it up.
 
