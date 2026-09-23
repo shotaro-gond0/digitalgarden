@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/claude/chats/2026-06-11-azure-ai-foundry-dify-agentic-ai-5b9b2611/","tags":["cat/devops","cat/azure"],"dg-note-properties":{"tags":["cat/devops","cat/azure"]}}
+{"dg-publish":true,"permalink":"/claude/chats/2026-06-11-azure-ai-foundry-dify-agentic-ai-5b9b2611/","tags":["cat/devops","cat/azure","cat/dify","cat/agentic-ai"],"dg-note-properties":{"tags":["cat/devops","cat/azure","cat/dify","cat/agentic-ai"]}}
 ---
 
 ---

@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/claude/cowork/dify/","tags":["cat/ml-dl","cat/python","cat/react","cat/devops","cat/azure","cat/md","cat/linux","cat/windows"],"dg-note-properties":{"tags":["cat/ml-dl","cat/python","cat/react","cat/devops","cat/azure","cat/md","cat/linux","cat/windows"]}}
+{"dg-publish":true,"permalink":"/claude/cowork/dify/","tags":["cat/ml-dl","cat/python","cat/react","cat/devops","cat/azure","cat/md","cat/linux","cat/windows","cat/dify","cat/agentic-ai"],"dg-note-properties":{"tags":["cat/ml-dl","cat/python","cat/react","cat/devops","cat/azure","cat/md","cat/linux","cat/windows","cat/dify","cat/agentic-ai"]}}
 ---
 
 ---
